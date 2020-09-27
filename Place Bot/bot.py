@@ -218,4 +218,4 @@ async def test(ctx):
 
 
 
-bot.run("NzQ3ODIzNDgyMDk5OTkwNzA5.X0Ue5A.mtB1y7V4AAR1y49I19oXYyc66MA")
+bot.run("TOKEN")
