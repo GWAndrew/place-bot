@@ -402,4 +402,4 @@ async def instagram(ctx, arg):
 
 token = open("token.txt", "r")
 
-bot.run(token)
+bot.run(token.read())
