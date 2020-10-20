@@ -347,5 +347,6 @@ async def unban(ctx, id: int):
 @bot.command(pass_context=True)
 async def instagram(ctx, *, arg):
     pass
+    #lol test
 
 bot.run(token["token"])
