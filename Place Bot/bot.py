@@ -398,4 +398,8 @@ async def instagram(ctx, arg):
         await ctx.send(str(data))
         print(data)
 
-bot.run(token["token"])
+
+
+token = open("token.txt", "r")
+
+bot.run(token)
