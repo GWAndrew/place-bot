@@ -344,5 +344,8 @@ async def unban(ctx, id: int):
         embed=discord.Embed(title="Unban", description="{} Just got unbanned by {}".format(user.mention, ctx.author.mention), color=0x0a0a0a)
         await ctx.send(embed=embed)
 
+@bot.command(pass_context=True)
+async def instagram(ctx, *, arg):
+    pass
 
 bot.run(token["token"])
