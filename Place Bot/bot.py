@@ -1,54 +1,75 @@
 import discord
 import asyncio
+from discord.ext.commands import has_permissions
 from discord.ext import commands
 import os
 import random
 import time
 import json
-from PIL import Image, ImageDraw, ImageFilter,ImageFont, ImageOps
+from PIL import Image, ImageDraw, ImageFilter,ImageFont
 from time import sleep
 import requests
 import shutil
 
-
-
-
-bot = commands.Bot(command_prefix='!!')
-
-
+bot = commands.Bot(command_prefix="!!")
+bot.remove_command("help")
+path="C:/Users/gwand/Documents/Place Bot/"
 
 @bot.event
 async def on_ready():
     print("bot online")
 
-
-
 @bot.event
 async def on_member_join(member):
-    size_img=(1000,300)
-    channel = bot.get_channel(747925331243171970)
-    channel.send('Welcome to the server {}'.format(member.name))
-    img = Image.open(r'Directory to background image') #1000x300
-    font = ImageFont.truetype(r'Directory to font', 100)
-    d = ImageDraw.draw(img)
-    d.text((0,0), '{}', font = font, fill=(255,255,255))
-    img.thumbnail(size_img)
-    img.save('welcome_img.png')
-    channel.send(file=discord.File('welcome_img.png'))
-
+    with open('users.json', 'r') as f:
+            users = json.load(f)
+    url = str(member.avatar_url)
+    user_agent = {'User-agent': 'Mozilla/5.0'}
+    imagea = requests.get(url, headers=user_agent, stream=True)
+    file = open('avatar.png', 'wb')
+    imagea.raw.decode_content = True
+    shutil.copyfileobj(imagea.raw, file)
+    file.close()
+    im1= Image.open("bg.png")#change dir
+    im2= Image.open("avatar.png")
+    newsize = (200, 200)
+    im2 = im2.resize(newsize)
+    welcome_pic = im1.copy()
+    welcome_pic.paste(im2, (50, 50))
+    draw = ImageDraw.Draw(welcome_pic)
+    font = ImageFont.truetype("Sanlulus-Light.ttf", 60)
+    draw.text((260, 125),"{} JUST JOINED!!!".format(member),(255,255,255),font=font)
+    pic = welcome_pic.save('welcome_pic.png', quality=95)
+    if users[str(member.guild.id)]["server"]["welcome_channel"] == "none":
+        if users[str(member.guild.id)]["server"]["welcome_message"] == "none":
+            await member.guild.system_channel.send("{} just joined {}!! Enjoy your stay! :heart:".format(member.mention, member.guild))
+        else:
+            await member.guild.system_channel.send(users[str(member.guild.id)]["server"]["welcome_message"])
+        await member.guild.system_channel.send(file=discord.File('welcome_pic.png'))
+    else:
+        channel = bot.get_channel(int(users[str(member.guild.id)]["server"]["welcome_channel"]))
+        if users[str(member.guild.id)]["server"]["welcome_message"] == "none":
+            await channel.send("{} just joined {}!! Enjoy your stay! :heart:".format(member.mention, member.guild))
+        else:
+            await channel.send(users[str(member.guild.id)]["server"]["welcome_message"])
+        await channel.send(file=discord.File('welcome_pic.png'))
 
 
 @bot.event
 async def on_member_remove(member):
-    channel = bot.get_channel(747925331243171970)
-    channel.send('{} left okay'.format(member.name))
-    img = Image.open(r'Directory to background image')  #1080p
-    font = ImageFont.truetype(r'Directory to font', 100)
-    d = ImageDraw.draw(img)
-    d.text((0,0), '{} left okauy7', font = font, fill=(255,255,255))
-    img.save('okay.png')
-    channel.send(file=discord.File('okay.png'))
-
+    with open('users.json', 'r') as f:
+            users = json.load(f)
+    if users[str(member.guild.id)]["server"]["leave_channel"] == "none":
+        if users[str(member.guild.id)]["server"]["leave_message"] == "none":
+            await member.guild.system_channel.send("{} just left the server :heartbroken:".format(member.mention))
+        else:
+            await member.guild.system_channel.send(users[str(member.guild.id)]["server"]["leave_message"])
+    else:
+        channel = bot.get_channel(int(users[str(member.guild.id)]["server"]["leave_channel"]))
+        if users[str(member.guild.id)]["server"]["leave_message"] == "none":
+            await channel.send("{} just left the server :heartbroken:".format(member.mention))
+        else:
+            await channel.send(users[str(member.guild.id)]["server"]["leave_message"])
 
 
 async def update_data(users, user, server_id):
@@ -62,6 +83,7 @@ async def update_data(users, user, server_id):
         users[str(server_id)]["members"][str(user.id)]["level"] = 1
         users[str(server_id)]["members"][str(user.id)]["messages"] = 0
 
+
 async def add_stats(users, user, exp, message, server_id):
     if not user.bot :
     	users[str(server_id)]["members"][str(user.id)]["experience"] += exp
@@ -69,18 +91,19 @@ async def add_stats(users, user, exp, message, server_id):
 
 
 async def level_up(users, user, channel, server_id):
-	experience = users[str(server_id)]["members"][str(user.id)]["experience"]
-	messages = users[str(server_id)]["members"][str(user.id)]["messages"]
-	lvl_start = users[str(server_id)]["members"][str(user.id)]["level"]
-	level = users[str(server_id)]["members"][str(user.id)]["level"]
-	lvl_end = 500*level
-	int(level)
-
-	if experience >= lvl_end:
-		level = level + 1
-		print ("{} Leveled up {}".format(user.mention, level))
-		users[str(server_id)]["members"][str(user.id)]["level"] = level
-
+    if user.bot:
+        pass
+    else :
+        experience = users[str(server_id)]["members"][str(user.id)]["experience"]
+        messages = users[str(server_id)]["members"][str(user.id)]["messages"]
+        lvl_start = users[str(server_id)]["members"][str(user.id)]["level"]
+        level = users[str(server_id)]["members"][str(user.id)]["level"]
+        lvl_end = 500*level
+        int(level)
+        if experience >= lvl_end:
+            level = level + 1
+            print ("{} Leveled up {}".format(user.mention, level))
+            users[str(server_id)]["members"][str(user.id)]["level"] = level
 
 @bot.event
 async def on_message(ctx):
@@ -92,19 +115,32 @@ async def on_message(ctx):
     if str(ctx.guild.id) not in users:
         users[str(ctx.guild.id)] = {}
         users[str(ctx.guild.id)]["members"]={}
+        users[str(ctx.guild.id)]["server"]={}
+        users[str(ctx.guild.id)]["server"]["welcome_channel"]="none"
+        users[str(ctx.guild.id)]["server"]["welcome_message"]="none"
+        users[str(ctx.guild.id)]["server"]["leave_channel"]="none"
+        users[str(ctx.guild.id)]["server"]["leave_message"]="none"
 
+    try :
+        test=users[str(ctx.guild.id)]["server"]["welcome_message"]
+        test=users[str(ctx.guild.id)]["server"]["welcome_channel"]
+        test=users[str(ctx.guild.id)]["server"]["leave_channel"]="none"
+        test=users[str(ctx.guild.id)]["server"]["leave_message"]="none"
+    except:
+        users[str(ctx.guild.id)]["server"]["welcome_channel"]="none"
+        users[str(ctx.guild.id)]["server"]["welcome_message"]="none"
+        users[str(ctx.guild.id)]["server"]["leave_channel"]="none"
+        users[str(ctx.guild.id)]["server"]["leave_message"]="none"
 
     await update_data(users, ctx.author, ctx.guild.id)
     await add_stats(users, ctx.author, random.randint(6,8), 1, ctx.guild.id)
     await level_up(users, ctx.author, ctx, ctx.guild.id)
 
+
     with open('users.json', 'w') as f:
         json.dump(users, f)
 
-#lol
-
-async def show_xp(ctx, users, user, channel):
-        server_id = ctx.guild.id
+async def show_xp(ctx, users, user, channel, server_id):
         experience = users[str(server_id)]["members"][str(user.id)]["experience"]
         level = users[str(server_id)]["members"][str(user.id)]["level"]
         messages = users[str(server_id)]["members"][str(user.id)]["messages"]
@@ -151,11 +187,11 @@ async def rank(ctx, user: discord.Member=None):
     if user is None :
     	with open('users.json', 'r') as f:
             	users = json.load(f)
-    	await show_xp(ctx, users, ctx.author,ctx.channel)
+    	await show_xp(ctx, users, ctx.author,ctx.channel, ctx.guild.id)
     else:
         with open('users.json', 'r') as f:
             	users = json.load(f)
-        await show_xp(ctx, users, user,ctx.channel)
+        await show_xp(ctx, users, user,ctx.channel,ctx.guild.id)
 
 #@bot.command(pass_context=True)
 #async def leaderboards(ctx):
@@ -197,7 +233,6 @@ async def leaderboards(ctx):
     await ctx.send(file=discord.File('okay.png'))
 
 
-
 @bot.command(pass_context=True)
 async def test(ctx):
     url = str(ctx.author.avatar_url)
@@ -207,15 +242,107 @@ async def test(ctx):
     imagea.raw.decode_content = True
     shutil.copyfileobj(imagea.raw, file)
     file.close()
-    im1= Image.open("C:/Users/GW Andrew/Documents/Place Bot/bg.png")#change dir
-    im2= Image.open("C:/Users/GW Andrew/Documents/Place Bot/avatar.png")
-    newsize = (200, 200) 
-    im2 = im2.resize(newsize) 
+    im1= Image.open("bg.png")#change dir
+    im2= Image.open("avatar.png")
+    newsize = (200, 200)
+    im2 = im2.resize(newsize)
     welcome_pic = im1.copy()
     welcome_pic.paste(im2, (50, 50))
-    pic = welcome_pic.save('C:/Users/GW Andrew/Documents/Place Bot/welcome_pic.png', quality=95)
-    await ctx.send(file=discord.File('C:/Users/GW Andrew/Documents/Place Bot/welcome_pic.png'))
+    draw = ImageDraw.Draw(welcome_pic)
+    font = ImageFont.truetype("Sanlulus-Light.ttf", 60)
+    draw.text((260, 125),"{} JUST JOINED!!!".format(ctx.author),(255,255,255),font=font)
+    pic = welcome_pic.save('welcome_pic.png', quality=95)
+    await ctx.send(file=discord.File('welcome_pic.png'))
 
 
+@bot.command(pass_context=True)
+async def help(ctx):
+    await ctx.send("help")
 
-bot.run("TOKEN")
+
+#server admins
+@bot.command(pass_context=True)
+@has_permissions(manage_channels=True)
+async def set(ctx, arg1, arg2):
+        with open('users.json', 'r') as f:
+                users = json.load(f)
+
+        #WELCOME
+        if arg1.upper() == "WELCOME_CHANNEL":
+            if arg2.upper()=="DEFAULT":
+                users[str(ctx.guild.id)]["server"]["welcome_channel"]="none"
+                await ctx.send("The welcome channel was successfully been set to default")
+            else:
+                await ctx.send("The welcome channel was successfully changed")
+                users[str(ctx.guild.id)]["server"]["welcome_channel"]=arg2
+
+        if arg1.upper() == "WELCOME_MESSAGE":
+            if arg2.upper()=="DEFAULT":
+                users[str(ctx.guild.id)]["server"]["welcome_message"]="none"
+                await ctx.send("The welcome message was successfully been set to default")
+            else:
+                users[str(ctx.guild.id)]["server"]["welcome_message"]=arg2
+                await ctx.send("The welcome message was successfully changed")
+
+        #LEAVE
+        if arg1.upper() == "LEAVE_CHANNEL":
+            if arg2.upper()=="DEFAULT":
+                users[str(ctx.guild.id)]["server"]["leave_channel"]="none"
+                await ctx.send("The leave channel was successfully been set to default")
+            else:
+                users[str(ctx.guild.id)]["server"]["leave_channel"]=arg2
+                await ctx.send("The leave channel was successfully changed")
+
+        if arg1.upper() == "LEAVE_MESSAGE":
+            if arg2.upper()=="DEFAULT":
+                users[str(ctx.guild.id)]["server"]["leave_message"]="none"
+                await ctx.send("The leave message was successfully been set to default")
+            else:
+                users[str(ctx.guild.id)]["server"]["leave_message"]=arg2
+                await ctx.send("The leave message was successfully changed")
+
+        with open('users.json', 'w') as f:
+            json.dump(users, f)
+
+
+@bot.command(pass_context=True)
+async def kick(ctx, user:discord.Member, *, reason=None):
+    try :
+        if discord.Permissions.kick_members:
+            await user.kick(reason=reason)
+            embed=discord.Embed(title="Kick", description="{} Just got kicked by {}".format(user.mention, ctx.author.mention), color=0x0a0a0a)
+            embed.set_footer(text="Reason : {}".format(reason))
+            await ctx.send(embed=embed)
+        else:
+            embed=discord.Embed(title="Kick", description="You do not have permissions to kick members", color=0x0a0a0a)
+            await ctx.send(embed=embed)
+    except :
+        embed=discord.Embed(title="Kick", description="You cannot kick a staff member", color=0x0a0a0a)
+        await ctx.send(embed=embed)
+
+
+@bot.command(pass_context=True)
+async def ban(ctx, user:discord.Member, *, reason=None):
+    try :
+        if discord.Permissions.ban_members:
+            await user.ban(reason=reason)
+            embed=discord.Embed(title="Ban", description="{} Just got banned by {}".format(user.mention, ctx.author.mention), color=0x0a0a0a)
+            embed.set_footer(text="Reason : {}".format(reason))
+            await ctx.send(embed=embed)
+        else:
+            embed=discord.Embed(title="Ban", description="You do not have permissions to ban members", color=0x0a0a0a)
+            await ctx.send(embed=embed)
+    except :
+        embed=discord.Embed(title="Ban", description="You cannot ban a staff member", color=0x0a0a0a)
+        await ctx.send(embed=embed)
+
+@bot.command(pass_context=True)
+async def unban(ctx, id: int):
+    if discord.Permissions.ban_members:
+        user = await bot.fetch_user(id)
+        await ctx.guild.unban(user)
+        embed=discord.Embed(title="Unban", description="{} Just got unbanned by {}".format(user.mention, ctx.author.mention), color=0x0a0a0a)
+        await ctx.send(embed=embed)
+
+
+bot.run(token["token"])
