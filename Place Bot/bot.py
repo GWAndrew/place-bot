@@ -265,6 +265,7 @@ async def help(ctx):
 @bot.command(pass_context=True)
 @has_permissions(manage_channels=True)
 async def set(ctx, arg1, arg2):
+        str(arg2)
         with open('users.json', 'r') as f:
                 users = json.load(f)
 
