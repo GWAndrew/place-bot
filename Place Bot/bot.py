@@ -347,11 +347,9 @@ async def unban(ctx, id: int):
 
 @bot.command(pass_context=True)
 async def instagram(ctx, arg):
-    user = InstagramUser(str(arg))
-    #profile_pic = user.profile_pic_url
-    await ctx.send(user.is_verified)
-    await ctx.send(user.number_of_followers)
-    await ctx.send(user.number_of_posts)
+    username=open("insta_username", "r")
+    password=open("insta_password", "r")
+    
 
 token = open("token.txt", "r")
 
