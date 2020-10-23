@@ -348,8 +348,8 @@ async def unban(ctx, id: int):
 
 @bot.command(pass_context=True)
 async def instagram(ctx, arg):
-    username=open("insta_username", "r")
-    password=open("insta_password", "r")
+    username=open("insta_username.txt", "r")
+    password=open("insta_password.txt", "r")
 
     instagram = InstagramScraper()
     instagram.with_credentials(username, password)
