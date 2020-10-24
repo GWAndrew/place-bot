@@ -32,7 +32,7 @@ async def on_member_join(member):
     imagea.raw.decode_content = True
     shutil.copyfileobj(imagea.raw, file)
     file.close()
-    im1= Image.open("bg.png")#change dir
+    im1= Image.open("bg.png")
     im2= Image.open("avatar.png")
     newsize = (200, 200)
     im2 = im2.resize(newsize)
@@ -352,10 +352,9 @@ async def instagram(ctx, arg):
     password=open("insta_password.txt", "r")
 
     instagram = InstagramScraper()
-    instagram.with_credentials(username, password)
-    res = instagram.login()
     account = instagram.get_account(str(arg))
-    following = instagram.get_following(account.get_id())
+    following = instagram.get_followers(account.get_id())
+    print(followers[0]['id'])
 
 
 token = open("token.txt", "r")
