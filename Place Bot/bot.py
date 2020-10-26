@@ -399,7 +399,7 @@ async def instagram(ctx, arg):
         await ctx.send(str(data))
         print(data)
 
-
+#ed
 
 token = open("token.txt", "r")
 
