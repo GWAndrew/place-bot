@@ -1,1 +1,11 @@
-{"747777130766532619": {"members": {"480809552204529665": {"experience": 109, "level": 1, "messages": 17}, "336180549192515585": {"experience": 258, "level": 1, "messages": 37}, "356427695711715332": {"experience": 295, "level": 1, "messages": 42}}}, "759527907206496287": {"members": {"336180549192515585": {"experience": 23, "level": 1, "messages": 3}}}, "758698825971531777": {"members": {"336180549192515585": {"experience": 50, "level": 1, "messages": 7}}}}
+{"747777130766532619":
+   {"members":
+      {"336180549192515585":
+         {"experience": 63, "level": 1, "messages": 9}
+       },
+          "server": {"welcome_channel": "none",
+          "welcome_message": "none",
+          "leave_channel": "none",
+          "leave_message": "none"}
+    }
+}
