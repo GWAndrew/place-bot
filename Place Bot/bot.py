@@ -11,7 +11,8 @@ from time import sleep
 import requests
 import shutil
 from bs4 import BeautifulSoup
-from instagramy import InstagramUser
+from instagram_scraper.instagram import InstagramScraper
+
 
 bot = commands.Bot(command_prefix="!!")
 bot.remove_command("help")
@@ -31,7 +32,7 @@ async def on_member_join(member):
     imagea.raw.decode_content = True
     shutil.copyfileobj(imagea.raw, file)
     file.close()
-    im1= Image.open("bg.png")#change dir
+    im1= Image.open("bg.png")
     im2= Image.open("avatar.png")
     newsize = (200, 200)
     im2 = im2.resize(newsize)
@@ -347,57 +348,13 @@ async def unban(ctx, id: int):
 
 @bot.command(pass_context=True)
 async def instagram(ctx, arg):
-    # instagram URL
-    URL = "https://www.instagram.com/{}/"
+    username=open("insta_username.txt", "r")
+    password=open("insta_password.txt", "r")
 
-    # parse function
-    def parse_data(s):
-
-        # creating a dictionary
-        data = {}
-
-        # splittting the content
-        # then taking the first part
-        s = s.split("-")[0]
-
-        # again splitting the content
-        s = s.split(" ")
-
-        # assigning the values
-        data['Followers'] = s[0]
-        data['Following'] = s[2]
-        data['Posts'] = s[4]
-
-        # returning the dictionary
-        return data
-
-    # scrape function
-    def scrape_data(username):
-
-        # getting the request from url
-        r = requests.get(URL.format(username))
-
-        # converting the text
-        s = BeautifulSoup(r.text, "html.parser")
-
-        # finding meta info
-        meta = s.find("meta", property ="og:description")
-
-        # calling parse method
-        return parse_data(meta.attrs['content'])
-
-    # main function
-    if __name__=="__main__":
-
-        # user name
-        username = str(arg)
-
-        # calling scrape function
-        data = scrape_data(username)
-
-        # printing the info
-        await ctx.send(str(data))
-        print(data)
+    instagram = InstagramScraper()
+    account = instagram.get_account(str(arg))
+    following = instagram.get_followers(account.get_id())
+    print(followers[0]['id'])
 
 
 token = open("token.txt", "r")
