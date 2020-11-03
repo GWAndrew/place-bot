@@ -11,7 +11,8 @@ from time import sleep
 import requests
 import shutil
 from bs4 import BeautifulSoup
-from instagramy import Instagram
+
+from instagram_scraper.instagram import InstagramScraper
 
 bot = commands.Bot(command_prefix="!!")
 bot.remove_command("help")
@@ -347,13 +348,13 @@ async def unban(ctx, id: int):
 
 @bot.command(pass_context=True)
 async def instagram(ctx, arg):
-    # Connecting the profile
-    user = Instagram(ctx)
 
-    # printing the basic details like
-    # followers, following, bio
-    await ctx.send(f"Verified : {user.is_verified()}, Popularity :{user.popularity()}, Bio : {user.get_biography()}")
-
+    instagram = InstagramScraper()
+    instagram.with_credentials('your account', 'your password')
+    res = instagram.login()
+    account = instagram.get_account('shaq')
+    followers = instagram.get_followers(account.get_id())
+    print(followers[0]['id'])
 
 
 token = open("token.txt", "r")
