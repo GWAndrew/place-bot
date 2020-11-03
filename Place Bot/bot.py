@@ -350,9 +350,9 @@ async def unban(ctx, id: int):
 async def instagram(ctx, arg):
 
     instagram = InstagramScraper()
-    instagram.with_credentials('your account', 'your password')
+    instagram.with_credentials(open("insta_username.txt", "r"), open("insta_password", "r"))
     res = instagram.login()
-    account = instagram.get_account('shaq')
+    account = instagram.get_account(arg)
     followers = instagram.get_followers(account.get_id())
     print(followers[0]['id'])
 
