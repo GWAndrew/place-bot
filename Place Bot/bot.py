@@ -11,7 +11,7 @@ from time import sleep
 import requests
 import shutil
 from bs4 import BeautifulSoup
-import instagramy as Instagram
+from instagramy import Instagram
 
 bot = commands.Bot(command_prefix="!!")
 bot.remove_command("help")
