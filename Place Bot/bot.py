@@ -354,20 +354,9 @@ async def instagram(ctx, arg):
     instagram.with_credentials("place_bot_", "20040322")
     instagram.login()
 
-    #Getting an account by id
+    #Getting an account by username
     account = instagram.get_account(arg)
 
-    # Available fields
-    print('Id: ', account.identifier)
-    print('Username: ', account.username)
-    print('Full name: ', account.full_name)
-    print('Biography: ', account.biography)
-    print('Profile pic url: ', account.get_profile_picture_url())
-    print('Number of published posts: ', account.media_count)
-    print('Number of followers: ', account.followed_by_count)
-    print('Number of follows: ', account.follows_count)
-    print('Is private: ', account.is_private)
-    print('Is verified: ', account.is_verified)
 
     private="No"
     verified="No"
