@@ -369,6 +369,14 @@ async def instagram(ctx, arg):
     print('Is private: ', account.is_private)
     print('Is verified: ', account.is_verified)
 
+    private="No"
+    verified="No"
+
+    if account.is_private:
+        private="Yes"
+    if account.is_verified:
+        verified="Yes"
+
     embed=discord.Embed(title=f"{account.full_name}", url=f"https://www.instagram.com/{account.username}/", description=f"{account.username}", color=0xea1084)
     embed.set_author(name=f"{account.username}'s Instagram")
     embed.set_thumbnail(url=f"{account.get_profile_picture_url()}")
