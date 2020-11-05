@@ -349,7 +349,9 @@ async def unban(ctx, id: int):
 async def instagram(ctx, arg):
     instagram = Instagram()
     # authentication supported
-    instagram.with_credentials('place_bot_', '20040322')
+    username = open("insta_username.txt", "r")
+    password = open("insta_password.txt", "r")
+    instagram.with_credentials(username, password)
     instagram.login()
 
     #Getting an account by id
