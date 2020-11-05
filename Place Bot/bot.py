@@ -13,8 +13,13 @@ import shutil
 from bs4 import BeautifulSoup
 from igramscraper.instagram import Instagram
 
-bot = commands.Bot(command_prefix="!!")
+
+intents = discord.Intents.default()
+intents.members = True
+intents.presences = True
+bot = commands.Bot(command_prefix="!!", intents = intents)
 bot.remove_command("help")
+
 
 @bot.event
 async def on_ready():
@@ -348,8 +353,6 @@ async def unban(ctx, id: int):
 @bot.command(pass_context=True)
 async def instagram(ctx, arg):
     instagram = Instagram()
-    username = str(open("insta_username.txt", "r"))
-    password = str(open("insta_password.txt", "r"))
     instagram.with_credentials("place_bot_", "20040322")
     instagram.login()
 
