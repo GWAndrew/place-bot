@@ -67,13 +67,13 @@ async def on_member_remove(member):
             users = json.load(f)
     if users[str(member.guild.id)]["server"]["leave_channel"] == "none":
         if users[str(member.guild.id)]["server"]["leave_message"] == "none":
-            await member.guild.system_channel.send("{} just left the server :heartbroken:".format(member.mention))
+            await member.guild.system_channel.send("{} just left the server :broken_heart:".format(member.mention))
         else:
             await member.guild.system_channel.send(users[str(member.guild.id)]["server"]["leave_message"])
     else:
         channel = bot.get_channel(int(users[str(member.guild.id)]["server"]["leave_channel"]))
         if users[str(member.guild.id)]["server"]["leave_message"] == "none":
-            await channel.send("{} just left the server :heartbroken:".format(member.mention))
+            await channel.send("{} just left the server :broken_heart:".format(member.mention))
         else:
             await channel.send(users[str(member.guild.id)]["server"]["leave_message"])
 
