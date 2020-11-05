@@ -348,13 +348,11 @@ async def unban(ctx, id: int):
 @bot.command(pass_context=True)
 async def instagram(ctx, arg):
     instagram = Instagram()
-    # authentication supported
     username = str(open("insta_username.txt", "r"))
     password = str(open("insta_password.txt", "r"))
     instagram.with_credentials("place_bot_", "20040322")
     instagram.login()
 
-    #Getting an account by username
     account = instagram.get_account(arg)
 
 
