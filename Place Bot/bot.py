@@ -358,18 +358,27 @@ async def instagram(ctx, arg):
     account = instagram.get_account(arg)
 
     # Available fields
-    print('Account info:')
     print('Id: ', account.identifier)
     print('Username: ', account.username)
     print('Full name: ', account.full_name)
     print('Biography: ', account.biography)
     print('Profile pic url: ', account.get_profile_picture_url())
-    print('External Url: ', account.external_url)
     print('Number of published posts: ', account.media_count)
     print('Number of followers: ', account.followed_by_count)
     print('Number of follows: ', account.follows_count)
     print('Is private: ', account.is_private)
     print('Is verified: ', account.is_verified)
+
+    embed=discord.Embed(title=f"{account.full_name}", url=f"https://www.instagram.com/{account.username}/", description=f"{account.username}", color=0xea1084)
+    embed.set_author(name=f"{account.username}'s Instagram")
+    embed.set_thumbnail(url=f"{account.get_profile_picture_url()}")
+    embed.add_field(name="Posts", value=f"{account.media_count}", inline=True)
+    embed.add_field(name="Followers", value=f"{account.followed_by_count}", inline=True)
+    embed.add_field(name="Following", value=f"{account.follows_count}", inline=True)
+    embed.add_field(name="Private", value=f"{private}", inline=True)
+    embed.add_field(name="Verified", value=f"{verified}", inline=True)
+    embed.set_footer(text=f"Command requested by {ctx.author}")
+    await ctx.send(embed=embed)
 
 
 token = open("token.txt", "r")
