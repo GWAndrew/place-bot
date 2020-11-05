@@ -349,9 +349,9 @@ async def unban(ctx, id: int):
 async def instagram(ctx, arg):
     instagram = Instagram()
     # authentication supported
-    username = open("insta_username.txt", "r")
-    password = open("insta_password.txt", "r")
-    instagram.with_credentials(username, password)
+    username = str(open("insta_username.txt", "r"))
+    password = str(open("insta_password.txt", "r"))
+    instagram.with_credentials("place_bot_", "20040322")
     instagram.login()
 
     #Getting an account by id
@@ -377,7 +377,7 @@ async def instagram(ctx, arg):
     if account.is_verified:
         verified="Yes"
 
-    embed=discord.Embed(title=f"{account.full_name}", url=f"https://www.instagram.com/{account.username}/", description=f"{account.username}", color=0xea1084)
+    embed=discord.Embed(title=f"{account.full_name}", url=f"https://www.instagram.com/{account.username}/", description=f"{account.biography}", color=0xea1084)
     embed.set_author(name=f"{account.username}'s Instagram")
     embed.set_thumbnail(url=f"{account.get_profile_picture_url()}")
     embed.add_field(name="Posts", value=f"{account.media_count}", inline=True)
