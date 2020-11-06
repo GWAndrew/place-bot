@@ -377,6 +377,10 @@ async def instagram(ctx, arg):
     embed.add_field(name="Verified", value=f"{verified}", inline=True)
     embed.set_footer(text=f"Command requested by {ctx.author}")
     await ctx.send(embed=embed)
+    
+@bot.command(pass_context=True)
+async def steam(ctx, arg):
+    pass
 
 
 token = open("token.txt", "r")
