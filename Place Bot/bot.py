@@ -147,6 +147,7 @@ async def on_message(ctx):
         json.dump(users, f)
 
 async def show_xp(ctx, users, user, channel, server_id):
+
         experience = users[str(server_id)]["members"][str(user.id)]["experience"]
         level = users[str(server_id)]["members"][str(user.id)]["level"]
         messages = users[str(server_id)]["members"][str(user.id)]["messages"]
@@ -177,7 +178,7 @@ async def show_xp(ctx, users, user, channel, server_id):
         complete = "█"*pourcent_bar_diff
         not_complete = " -"*pourcent_bar
         Embed = discord.Embed(colour = discord.Colour.blue())
-        Embed.set_author(name="{}'S RANK".format(user))
+        Embed.set_author(name="{}'S RANK".format(user[:-5]))
         Embed.add_field(name='LEVEL :', value='{}'.format(level), inline=True)
         Embed.add_field(name='TOTAL XP :', value='{}'.format(experience), inline=True)
         Embed.add_field(name='MESSAGES SENT :',value='{}'.format(messages),inline=True)
@@ -377,7 +378,7 @@ async def instagram(ctx, arg):
     embed.add_field(name="Verified", value=f"{verified}", inline=True)
     embed.set_footer(text=f"Command requested by {ctx.author}")
     await ctx.send(embed=embed)
-    
+
 @bot.command(pass_context=True)
 async def steam(ctx, arg):
     pass
