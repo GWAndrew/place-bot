@@ -33,25 +33,25 @@ async def on_ready():
 
 @bot.event
 async def on_member_join(member):
-    with open('users.json', 'r') as f:
+    with open(f'{path}users.json', 'r') as f:
             users = json.load(f)
     url = str(member.avatar_url)
     user_agent = {'User-agent': 'Mozilla/5.0'}
     imagea = requests.get(url, headers=user_agent, stream=True)
-    file = open('avatar.png', 'wb')
+    file = open(f'{path}avatar.png', 'wb')
     imagea.raw.decode_content = True
     shutil.copyfileobj(imagea.raw, file)
     file.close()
-    im1= Image.open("bg.png")
-    im2= Image.open("avatar.png")
+    im1= Image.open(f"{path}bg.png")
+    im2= Image.open(f"{path}avatar.png")
     newsize = (200, 200)
     im2 = im2.resize(newsize)
     welcome_pic = im1.copy()
     welcome_pic.paste(im2, (50, 50))
     draw = ImageDraw.Draw(welcome_pic)
-    font = ImageFont.truetype("Sanlulus-Light.ttf", 60)
+    font = ImageFont.truetype(f"{path}Sanlulus-Light.ttf", 60)
     draw.text((260, 125),"{} JUST JOINED!!!".format(member),(255,255,255),font=font)
-    pic = welcome_pic.save('welcome_pic.png', quality=95)
+    pic = welcome_pic.save(f'{path}welcome_pic.png', quality=95)
     if users[str(member.guild.id)]["server"]["welcome_channel"] == "none":
         if users[str(member.guild.id)]["server"]["welcome_message"] == "none":
             await member.guild.system_channel.send("{} just joined {}!! Enjoy your stay! :heart:".format(member.mention, member.guild))
@@ -64,12 +64,12 @@ async def on_member_join(member):
             await channel.send("{} just joined {}!! Enjoy your stay! :heart:".format(member.mention, member.guild))
         else:
             await channel.send(users[str(member.guild.id)]["server"]["welcome_message"])
-        await channel.send(file=discord.File('welcome_pic.png'))
+        await channel.send(file=discord.File(f'{path}welcome_pic.png'))
 
 
 @bot.event
 async def on_member_remove(member):
-    with open('users.json', 'r') as f:
+    with open(f'{path}users.json', 'r') as f:
             users = json.load(f)
     if users[str(member.guild.id)]["server"]["leave_channel"] == "none":
         if users[str(member.guild.id)]["server"]["leave_message"] == "none":
@@ -121,7 +121,7 @@ async def level_up(users, user, channel, server_id):
 async def on_message(ctx):
     await bot.process_commands(ctx)
 
-    with open('users.json', 'r') as f:
+    with open(f'{path}users.json', 'r') as f:
         users = json.load(f)
 
     if str(ctx.guild.id) not in users:
@@ -149,7 +149,7 @@ async def on_message(ctx):
     await level_up(users, ctx.author, ctx, ctx.guild.id)
 
 
-    with open('users.json', 'w') as f:
+    with open(f'{path}users.json', 'w') as f:
         json.dump(users, f)
 
 async def show_xp(ctx, users, user, channel, server_id):
@@ -198,11 +198,11 @@ async def show_xp(ctx, users, user, channel, server_id):
 @bot.command(pass_context = True)
 async def rank(ctx, user: discord.Member=None):
     if user is None :
-    	with open('users.json', 'r') as f:
+    	with open(f'{path}users.json', 'r') as f:
             	users = json.load(f)
     	await show_xp(ctx, users, ctx.author,ctx.channel, ctx.guild.id)
     else:
-        with open('users.json', 'r') as f:
+        with open(f'{path}users.json', 'r') as f:
             	users = json.load(f)
         await show_xp(ctx, users, user,ctx.channel,ctx.guild.id)
 
@@ -223,7 +223,7 @@ async def rank(ctx, user: discord.Member=None):
 async def leaderboards(ctx):
     x = 0
     y = 0
-    with open('users.json', 'r') as fp:
+    with open(f'{path}users.json', 'r') as fp:
         users = json.load(fp)
     img = Image.open(r'backgtudn imge')
     font = ImageFont.truetype(r'font', 100)
@@ -247,28 +247,6 @@ async def leaderboards(ctx):
 
 
 @bot.command(pass_context=True)
-async def test(ctx):
-    url = str(ctx.author.avatar_url)
-    user_agent = {'User-agent': 'Mozilla/5.0'}
-    imagea = requests.get(url, headers=user_agent, stream=True)
-    file = open('avatar.png', 'wb')
-    imagea.raw.decode_content = True
-    shutil.copyfileobj(imagea.raw, file)
-    file.close()
-    im1= Image.open("bg.png")#change dir
-    im2= Image.open("avatar.png")
-    newsize = (200, 200)
-    im2 = im2.resize(newsize)
-    welcome_pic = im1.copy()
-    welcome_pic.paste(im2, (50, 50))
-    draw = ImageDraw.Draw(welcome_pic)
-    font = ImageFont.truetype("Sanlulus-Light.ttf", 60)
-    draw.text((260, 125),"{} JUST JOINED!!!".format(ctx.author),(255,255,255),font=font)
-    pic = welcome_pic.save('welcome_pic.png', quality=95)
-    await ctx.send(file=discord.File('welcome_pic.png'))
-
-
-@bot.command(pass_context=True)
 async def help(ctx):
     await ctx.send("help")
 
@@ -277,7 +255,7 @@ async def help(ctx):
 @bot.command(pass_context=True)
 @has_permissions(manage_channels=True)
 async def set(ctx, arg1, arg2):
-        with open('users.json', 'r') as f:
+        with open(f'{path}users.json', 'r') as f:
                 users = json.load(f)
 
         #WELCOME
@@ -314,7 +292,7 @@ async def set(ctx, arg1, arg2):
                 users[str(ctx.guild.id)]["server"]["leave_message"]=arg2
                 await ctx.send("The leave message was successfully changed")
 
-        with open('users.json', 'w') as f:
+        with open(f'{path}users.json', 'w') as f:
             json.dump(users, f)
 
 
