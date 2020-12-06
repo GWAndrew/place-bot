@@ -14,6 +14,12 @@ from bs4 import BeautifulSoup
 from igramscraper.instagram import Instagram
 
 
+
+path = open("path.txt", "r")
+
+
+
+
 intents = discord.Intents.default()
 intents.members = True
 intents.presences = True
