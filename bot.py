@@ -26,6 +26,7 @@ intents.presences = True
 bot = commands.Bot(command_prefix="!!", intents = intents)
 bot.remove_command("help")
 
+#test
 
 @bot.event
 async def on_ready():
