@@ -369,6 +369,11 @@ async def steam(ctx, arg):
     pass
 
 
+
+@bot.command(pass_context=True)
+async def youtube(ctx, arg):
+    pass
+
 token = open("token.txt", "r")
 
 bot.run(token.read())
