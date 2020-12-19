@@ -370,9 +370,26 @@ async def steam(ctx, arg):
 
 
 
+
+
 @bot.command(pass_context=True)
 async def youtube(ctx, arg):
     pass
+
+
+
+@bot.command(pass_context=True)
+async def maths_game(ctx, *, arg):
+    channel = ctx.channel
+    await ctx.send('Say hello!')
+
+    def check(m):
+        return m.content == 'hello' and m.channel == channel
+
+    msg = await bot.wait_for('message', check=check)
+    await channel.send('Hello {.author}!'.format(msg))
+
+
 
 token = open("token.txt", "r")
 
