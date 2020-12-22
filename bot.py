@@ -11,13 +11,12 @@ from time import sleep
 import requests
 import shutil
 from bs4 import BeautifulSoup
-from igramscraper.instagram import Instagram
+#from igramscraper.instagram import Instagram
 
 
 
-path = open("path.txt", "r")
+path = ""
 
-os.system("pwd")
 
 
 intents = discord.Intents.default()
@@ -336,33 +335,33 @@ async def unban(ctx, id: int):
         embed=discord.Embed(title="Unban", description="{} Just got unbanned by {}".format(user.mention, ctx.author.mention), color=0x0a0a0a)
         await ctx.send(embed=embed)
 
-@bot.command(pass_context=True)
-async def instagram(ctx, arg):
-    instagram = Instagram()
-    instagram.with_credentials("place_bot_", "20040322")
-    instagram.login()
-
-    account = instagram.get_account(arg)
-
-
-    private="No"
-    verified="No"
-
-    if account.is_private:
-        private="Yes"
-    if account.is_verified:
-        verified="Yes"
-
-    embed=discord.Embed(title=f"{account.full_name}", url=f"https://www.instagram.com/{account.username}/", description=f"{account.biography}", color=0xea1084)
-    embed.set_author(name=f"{account.username}'s Instagram")
-    embed.set_thumbnail(url=f"{account.get_profile_picture_url()}")
-    embed.add_field(name="Posts", value=f"{account.media_count}", inline=True)
-    embed.add_field(name="Followers", value=f"{account.followed_by_count}", inline=True)
-    embed.add_field(name="Following", value=f"{account.follows_count}", inline=True)
-    embed.add_field(name="Private", value=f"{private}", inline=True)
-    embed.add_field(name="Verified", value=f"{verified}", inline=True)
-    embed.set_footer(text=f"Command requested by {ctx.author}")
-    await ctx.send(embed=embed)
+#@bot.command(pass_context=True)
+#async def instagram(ctx, arg):
+#    instagram = Instagram()
+#    instagram.with_credentials("place_bot_", "20040322")
+#    instagram.login()
+#
+#    account = instagram.get_account(arg)
+#
+#
+#    private="No"
+#    verified="No"
+#
+#    if account.is_private:
+#        private="Yes"
+#    if account.is_verified:
+#        verified="Yes"
+#
+#    embed=discord.Embed(title=f"{account.full_name}", url=f"https://www.instagram.com/{account.username}/", description=f"{account.biography}", color=0xea1084)
+#    embed.set_author(name=f"{account.username}'s Instagram")
+#    embed.set_thumbnail(url=f"{account.get_profile_picture_url()}")
+#    embed.add_field(name="Posts", value=f"{account.media_count}", inline=True)
+#    embed.add_field(name="Followers", value=f"{account.followed_by_count}", inline=True)
+#    embed.add_field(name="Following", value=f"{account.follows_count}", inline=True)
+#    embed.add_field(name="Private", value=f"{private}", inline=True)
+#    embed.add_field(name="Verified", value=f"{verified}", inline=True)
+#    embed.set_footer(text=f"Command requested by {ctx.author}")
+#    await ctx.send(embed=embed)
 
 @bot.command(pass_context=True)
 async def steam(ctx, arg):
@@ -388,6 +387,32 @@ async def maths_game(ctx, *, arg):
 
     msg = await bot.wait_for('message', check=check)
     await channel.send('Hello {.author}!'.format(msg))
+
+
+
+
+
+@bot.command(pass_context=True)
+async def test(ctx):
+    url = str(ctx.author.avatar_url)
+    user_agent = {'User-agent': 'Mozilla/5.0'}
+    imagea = requests.get(url, headers=user_agent, stream=True)
+    file = open("avatar.png", 'wb')
+    imagea.raw.decode_content = True
+    shutil.copyfileobj(imagea.raw, file)
+    file.close()
+    im1= Image.open(f"{path}bg2.png")
+    im2= Image.open(f"{path}avatar.png")
+    newsize = (200, 200)
+    im2 = im2.resize(newsize)
+    welcome_pic = im1.copy()
+    welcome_pic.paste(im2, (400, 200))
+    draw = ImageDraw.Draw(welcome_pic)
+    font = ImageFont.truetype(f"{path}Sanlulus-Light.ttf", 60)
+    draw.text((260, 125),"{} JUST JOINED!!!".format(ctx.author),(255,255,255),font=font)
+    pic = welcome_pic.save("welcome_pic.png", quality=95)
+    await ctx.send(file=discord.File('welcome_pic.png'))
+
 
 
 
