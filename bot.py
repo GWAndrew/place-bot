@@ -416,6 +416,8 @@ async def test(ctx):
 
 
 
+ 
+
 token = open("token.txt", "r")
 
 bot.run(token.read())
