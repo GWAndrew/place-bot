@@ -413,8 +413,8 @@ async def test(ctx):
     draw = ImageDraw.Draw(welcome_pic)
     sanlulus_light = ImageFont.truetype(f"{path}Sanlulus-Light.ttf", 60)
     #saturday_alright = ImageFont.truetype(f"{path}Saturdday Alright.otf", 60)
-    w, h = draw.textsize(msg)
-    ww, hw=draw.textsize(welcome_msg)
+    w, h = draw.textsize(msg, font=sanlulus_light)
+    ww, hw=draw.textsize(welcome_msg, font=sanlulus_light)
     draw.text(((W-w)/2,500),msg,(255,255,255),font=sanlulus_light)
     draw.text(((W-ww)/2,100),welcome_msg,(255,255,255),font=sanlulus_light)
 
