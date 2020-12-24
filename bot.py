@@ -395,7 +395,7 @@ async def maths_game(ctx, *, arg):
 @bot.command(pass_context=True)
 async def test(ctx):
     W, H = (1000,600)
-    msg = "{} JUST JOINED!!!".format(ctx.author)
+    msg = "{}".format(ctx.author)
     url = str(ctx.author.avatar_url)
     user_agent = {'User-agent': 'Mozilla/5.0'}
     imagea = requests.get(url, headers=user_agent, stream=True)
@@ -413,7 +413,7 @@ async def test(ctx):
     w, h = draw.textsize(msg)
     font = ImageFont.truetype(f"{path}Sanlulus-Light.ttf", 60)
     w, h = draw.textsize(msg)
-    draw.text(((W-w)/4,100),msg,(255,255,255),font=font)
+    draw.text(((W-w)/2,500),msg,(255,255,255),font=font)
 
     pic = welcome_pic.save("welcome_pic.png", quality=95)
     await ctx.send(file=discord.File('welcome_pic.png'))
