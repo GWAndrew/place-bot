@@ -152,6 +152,25 @@ async def on_message(ctx):
     with open("users.json", 'w') as f:
         json.dump(users, f)
 
+
+
+
+#BOT ADMIN STUFFS
+
+@bot.command(pass_context=True)
+async def update(ctx):
+    if ctx.author.id == 336180549192515585:
+        embed=discord.Embed(color=0xfffffe)
+        embed.set_author(name=f"UPDATING...")
+        await ctx.send(embed=embed)
+        os.system("python3 update.py")
+    else:
+        print("NOT ANDRE TRIED SSH RUN")
+        pass
+
+
+
+
 async def show_xp(ctx, users, user, channel, server_id):
 
         experience = users[str(server_id)]["members"][str(user.id)]["experience"]
@@ -420,6 +439,7 @@ async def test(ctx):
 
     pic = welcome_pic.save("welcome_pic.png", quality=1)
     await ctx.send(file=discord.File('welcome_pic.png'))
+
 
 
 
