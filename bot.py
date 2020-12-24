@@ -413,7 +413,7 @@ async def test(ctx):
     w, h = draw.textsize(msg)
     font = ImageFont.truetype(f"{path}Sanlulus-Light.ttf", 60)
     w, h = draw.textsize(msg)
-    draw.text((W-w)/4,100,msg,(255,255,255),font=font)
+    draw.text(((W-w)/4,100),msg,(255,255,255),font=font)
 
     pic = welcome_pic.save("welcome_pic.png", quality=95)
     await ctx.send(file=discord.File('welcome_pic.png'))
