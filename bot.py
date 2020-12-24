@@ -415,7 +415,7 @@ async def test(ctx):
     avocado_creamy=ImageFont.truetype(f"{path}Avocado Creamy.ttf", 160)
     w, h = draw.textsize(msg, font=sanlulus_light)
     ww, hw=draw.textsize(welcome_msg, font=avocado_creamy)
-    draw.text(((W-w)/2,450),msg,(255,255,255),font=sanlulus_light)
+    draw.text(((W-w)/2,460),msg,(255,255,255),font=sanlulus_light)
     draw.text(((W-ww)/2,0),welcome_msg,(255,211,211),font=avocado_creamy)
 
     pic = welcome_pic.save("welcome_pic.png", quality=1)
