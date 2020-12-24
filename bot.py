@@ -203,7 +203,8 @@ async def show_xp(ctx, users, user, channel, server_id):
         complete = "█"*pourcent_bar_diff
         not_complete = " -"*pourcent_bar
         Embed = discord.Embed(colour = discord.Colour.blue())
-        Embed.set_author(name="{}'S RANK".format)
+        Embed.set_author(name="{}'S RANK".format(user))
+        embed.set_thumbnail(url=user.avatar_url)
         Embed.add_field(name='LEVEL :', value='{}'.format(level), inline=True)
         Embed.add_field(name='TOTAL XP :', value='{}'.format(experience), inline=True)
         Embed.add_field(name='MESSAGES SENT :',value='{}'.format(messages),inline=True)
