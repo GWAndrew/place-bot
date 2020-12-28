@@ -62,7 +62,7 @@ async def on_member_join(member):
     draw.text(((W-w)/2,460),msg,(255,255,255),font=sanlulus_light)
     draw.text(((W-ww)/2,0),welcome_msg,(255,255,255),font=avocado_creamy)
     pic = welcome_pic.save("welcome_pic.png", quality=1)
-    
+
     if users[str(member.guild.id)]["server"]["welcome_channel"] == "none":
         if users[str(member.guild.id)]["server"]["welcome_message"] == "none":
             await member.guild.system_channel.send("{} just joined {}!! Enjoy your stay! :heart:".format(member.mention, member.guild))
