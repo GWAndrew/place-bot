@@ -423,9 +423,11 @@ async def test(ctx):
     imagea.raw.decode_content = True
     shutil.copyfileobj(imagea.raw, file)
     file.close()
-    im1= Image.open(f"{path}bg2.png")
+    im1= Image.open(f"{path}bg3.png")
     im2= Image.open(f"{path}avatar.png")
+    newsize_bg=(1000,600)
     newsize = (200, 200)
+    im1=im1.resize(newsize_bg)
     im2 = im2.resize(newsize)
     welcome_pic = im1.copy()
     welcome_pic.paste(im2, (400, 200))
