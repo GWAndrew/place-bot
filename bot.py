@@ -423,7 +423,7 @@ async def test(ctx):
     imagea.raw.decode_content = True
     shutil.copyfileobj(imagea.raw, file)
     file.close()
-    im1= Image.open(f"{path}bg3.png")
+    im1= Image.open(f"{path}bg3.jpeg")
     im2= Image.open(f"{path}avatar.png")
     newsize_bg=(1000,600)
     newsize = (200, 200)
@@ -438,7 +438,7 @@ async def test(ctx):
     w, h = draw.textsize(msg, font=sanlulus_light)
     ww, hw=draw.textsize(welcome_msg, font=avocado_creamy)
     draw.text(((W-w)/2,460),msg,(255,255,255),font=sanlulus_light)
-    draw.text(((W-ww)/2,0),welcome_msg,(135,204,255),font=avocado_creamy)
+    draw.text(((W-ww)/2,0),welcome_msg,(255,255,255),font=avocado_creamy)
 
     pic = welcome_pic.save("welcome_pic.png", quality=1)
     await ctx.send(file=discord.File('welcome_pic.png'))
