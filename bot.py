@@ -35,6 +35,9 @@ async def on_ready():
 async def on_member_join(member):
     with open("users.json", 'r') as f:
             users = json.load(f)
+    W, H = (1000,600)
+    msg = "{}".format(member)
+    welcome_msg="WELCOME"
     url = str(member.avatar_url)
     user_agent = {'User-agent': 'Mozilla/5.0'}
     imagea = requests.get(url, headers=user_agent, stream=True)
@@ -42,16 +45,24 @@ async def on_member_join(member):
     imagea.raw.decode_content = True
     shutil.copyfileobj(imagea.raw, file)
     file.close()
-    im1= Image.open(f"{path}bg.png")
+    im1= Image.open(f"{path}bg3.jpeg")
     im2= Image.open(f"{path}avatar.png")
+    newsize_bg=(1000,600)
     newsize = (200, 200)
+    im1=im1.resize(newsize_bg)
     im2 = im2.resize(newsize)
     welcome_pic = im1.copy()
-    welcome_pic.paste(im2, (50, 50))
+    welcome_pic.paste(im2, (400, 200))
     draw = ImageDraw.Draw(welcome_pic)
-    font = ImageFont.truetype(f"{path}Sanlulus-Light.ttf", 60)
-    draw.text((260, 125),"{} JUST JOINED!!!".format(member),(255,255,255),font=font)
-    pic = welcome_pic.save("welcome_pic.png", quality=95)
+    sanlulus_light = ImageFont.truetype(f"{path}Sanlulus-Light.ttf", 60)
+    #saturday_alright = ImageFont.truetype(f"{path}Saturdday Alright.otf", 60)
+    avocado_creamy=ImageFont.truetype(f"{path}Avocado Creamy.ttf", 160)
+    w, h = draw.textsize(msg, font=sanlulus_light)
+    ww, hw=draw.textsize(welcome_msg, font=avocado_creamy)
+    draw.text(((W-w)/2,460),msg,(255,255,255),font=sanlulus_light)
+    draw.text(((W-ww)/2,0),welcome_msg,(255,255,255),font=avocado_creamy)
+    pic = welcome_pic.save("welcome_pic.png", quality=1)
+    
     if users[str(member.guild.id)]["server"]["welcome_channel"] == "none":
         if users[str(member.guild.id)]["server"]["welcome_message"] == "none":
             await member.guild.system_channel.send("{} just joined {}!! Enjoy your stay! :heart:".format(member.mention, member.guild))
