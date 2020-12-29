@@ -33,7 +33,7 @@ async def on_ready():
 
 @bot.event
 async def on_member_join(member):
-    with open("users.json", 'r') as f:
+    with open(f"{path}users.json", 'r') as f:
             users = json.load(f)
     W, H = (1000,600)
     msg = "{}".format(member)
@@ -41,7 +41,7 @@ async def on_member_join(member):
     url = str(member.avatar_url)
     user_agent = {'User-agent': 'Mozilla/5.0'}
     imagea = requests.get(url, headers=user_agent, stream=True)
-    file = open("avatar.png", 'wb')
+    file = open(f"{path}avatar.png", 'wb')
     imagea.raw.decode_content = True
     shutil.copyfileobj(imagea.raw, file)
     file.close()
@@ -61,7 +61,7 @@ async def on_member_join(member):
     ww, hw=draw.textsize(welcome_msg, font=avocado_creamy)
     draw.text(((W-w)/2,460),msg,(255,255,255),font=sanlulus_light)
     draw.text(((W-ww)/2,0),welcome_msg,(255,255,255),font=avocado_creamy)
-    pic = welcome_pic.save("welcome_pic.png", quality=1)
+    pic = welcome_pic.save(f"{path}welcome_pic.png", quality=1)
 
     if users[str(member.guild.id)]["server"]["welcome_channel"] == "none":
         if users[str(member.guild.id)]["server"]["welcome_message"] == "none":
@@ -80,7 +80,7 @@ async def on_member_join(member):
 
 @bot.event
 async def on_member_remove(member):
-    with open("users.json", 'r') as f:
+    with open(f"{path}users.json", 'r') as f:
             users = json.load(f)
     if users[str(member.guild.id)]["server"]["leave_channel"] == "none":
         if users[str(member.guild.id)]["server"]["leave_message"] == "none":
@@ -132,7 +132,7 @@ async def level_up(users, user, channel, server_id):
 async def on_message(ctx):
     await bot.process_commands(ctx)
 
-    with open("users.json", 'r') as f:
+    with open(f"{path}users.json", 'r') as f:
         users = json.load(f)
 
     if str(ctx.guild.id) not in users:
@@ -160,7 +160,7 @@ async def on_message(ctx):
     await level_up(users, ctx.author, ctx, ctx.guild.id)
 
 
-    with open("users.json", 'w') as f:
+    with open(f"{path}users.json", 'w') as f:
         json.dump(users, f)
 
 
@@ -174,7 +174,7 @@ async def update(ctx):
         embed=discord.Embed(color=0xfffffe)
         embed.set_author(name=f"UPDATING...")
         await ctx.send(embed=embed)
-        os.system("python3 update.py")
+        os.system(f"python3 {path}update.py")
     else:
         print("NOT ANDRE TRIED SSH RUN")
         pass
@@ -229,11 +229,11 @@ async def show_xp(ctx, users, user, channel, server_id):
 @bot.command(pass_context = True)
 async def rank(ctx, user: discord.Member=None):
     if user is None :
-    	with open("users.json", 'r') as f:
+    	with open(f"{path}users.json", 'r') as f:
             	users = json.load(f)
     	await show_xp(ctx, users, ctx.author,ctx.channel, ctx.guild.id)
     else:
-        with open("users.json", 'r') as f:
+        with open(f"{path}users.json", 'r') as f:
             	users = json.load(f)
         await show_xp(ctx, users, user,ctx.channel,ctx.guild.id)
 
@@ -286,7 +286,7 @@ async def help(ctx):
 @bot.command(pass_context=True)
 @has_permissions(manage_channels=True)
 async def set(ctx, arg1, arg2):
-        with open("users.json", 'r') as f:
+        with open(f"{path}users.json", 'r') as f:
                 users = json.load(f)
 
         #WELCOME
@@ -323,7 +323,7 @@ async def set(ctx, arg1, arg2):
                 users[str(ctx.guild.id)]["server"]["leave_message"]=arg2
                 await ctx.send("The leave message was successfully changed")
 
-        with open("users.json", 'w') as f:
+        with open(f"{path}users.json", 'w') as f:
             json.dump(users, f)
 
 
@@ -430,7 +430,7 @@ async def test(ctx):
     url = str(ctx.author.avatar_url)
     user_agent = {'User-agent': 'Mozilla/5.0'}
     imagea = requests.get(url, headers=user_agent, stream=True)
-    file = open("avatar.png", 'wb')
+    file = open(f"{path}avatar.png", 'wb')
     imagea.raw.decode_content = True
     shutil.copyfileobj(imagea.raw, file)
     file.close()
@@ -451,13 +451,13 @@ async def test(ctx):
     draw.text(((W-w)/2,460),msg,(255,255,255),font=sanlulus_light)
     draw.text(((W-ww)/2,0),welcome_msg,(255,255,255),font=avocado_creamy)
 
-    pic = welcome_pic.save("welcome_pic.png", quality=1)
-    await ctx.send(file=discord.File('welcome_pic.png'))
+    pic = welcome_pic.save(f"{path}welcome_pic.png", quality=1)
+    await ctx.send(file=discord.File(f"{path}welcome_pic.png"))
 
 
 
 
 
-token = open("token.txt", "r")
+token = open(f"{path}token.txt", "r")
 
 bot.run(token.read())
