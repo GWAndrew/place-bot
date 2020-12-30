@@ -1,3 +1,5 @@
+#!/usr/bin/python3.7
+
 import discord
 import asyncio
 from discord.ext.commands import has_permissions
