@@ -145,17 +145,21 @@ async def on_message(ctx):
         users[str(ctx.guild.id)]["server"]["welcome_message"]="none"
         users[str(ctx.guild.id)]["server"]["leave_channel"]="none"
         users[str(ctx.guild.id)]["server"]["leave_message"]="none"
+        users[str(ctx.guild.id)]["server"]["join_role"]="none"
 
     try :
         test=users[str(ctx.guild.id)]["server"]["welcome_message"]
         test=users[str(ctx.guild.id)]["server"]["welcome_channel"]
         test=users[str(ctx.guild.id)]["server"]["leave_channel"]="none"
         test=users[str(ctx.guild.id)]["server"]["leave_message"]="none"
+        test=users[str(ctx.guild.id)]["server"]["join_role"]="none"
+
     except:
         users[str(ctx.guild.id)]["server"]["welcome_channel"]="none"
         users[str(ctx.guild.id)]["server"]["welcome_message"]="none"
         users[str(ctx.guild.id)]["server"]["leave_channel"]="none"
         users[str(ctx.guild.id)]["server"]["leave_message"]="none"
+        users[str(ctx.guild.id)]["server"]["join_role"]="none"
 
     await update_data(users, ctx.author, ctx.guild.id)
     await add_stats(users, ctx.author, random.randint(6,8), 1, ctx.guild.id)
