@@ -78,6 +78,10 @@ async def on_member_join(member):
         else:
             await channel.send(users[str(member.guild.id)]["server"]["welcome_message"])
         await channel.send(file=discord.File("welcome_pic.png"))
+    if users[str(ctx.guild.id)]["server"]["join_role"] == "none":
+        pass
+    else :
+        pass #add role
 
 
 @bot.event
